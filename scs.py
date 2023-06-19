@@ -23,23 +23,24 @@ def fetch_table(cfg: Config, url: str) -> str:
     return parsed_html.tables[0][1:]
 
 def main(args: list[str]) -> bool:
-    current_dir = __results__ / date.today().strftime("%y%m%d")
     if not os.path.exists(__results__):
         __results__.mkdir(parents=True, exist_ok=True)
 
+    current_dir = __results__ / date.today().strftime("%y%m%d")
     if not os.path.exists(current_dir):
         current_dir.mkdir(parents=True, exist_ok=True)
 
     cfg = Config()
     tbl = fetch_table(cfg, "https://store.steampowered.com/account/remotestorage")
-    for game_row in list(filter(lambda x: x[0] in cfg.game_whitelist, tbl)):
-        download_tbl: list[list[str]] = fetch_table(cfg, game_row[3])
-        game_dir: pathlib.Path = current_dir / game_row[0].replace(":", "").replace("!", "").replace("?", "")
+    tbl = list(filter(lambda x: x[0] in cfg.game_whitelist, tbl)) if len(cfg.game_whitelist) > 0 else tbl
+    for game_row in tbl:
+        download_tbl = fetch_table(cfg, game_row[3])
+        game_dir = current_dir / game_row[0].replace(":", "").replace("!", "").replace("?", "")
         if not os.path.exists(game_dir):
             game_dir.mkdir(parents=True, exist_ok=True)
 
-        for download_row in download_tbl:
-            full_name = (f"%{download_row[0]}%{download_row[1]}" if len(download_row[0]) > 0 else download_row[1]).replace("/", "@").replace("\\", "@")
+        for download_row in list(filter(lambda x: len(x[1]) > 0, download_tbl)):
+            full_name = (f"%{download_row[0]}%{download_row[1]}" if len(download_row[0]) > 0 else download_row[1]).replace("/", "%").replace("\\", "%")
             req = Request(download_row[4], headers={"User-Agent": "Mozilla/5.0", "Cookie": f"steamLoginSecure={cfg.steam_login_secure}"})
             data = urlopen(req).read()
             with open(game_dir / full_name, 'wb') as w_data:

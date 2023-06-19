@@ -28,3 +28,5 @@ Python 3.10 with the following libraries installed:
 8. Note that the game names have to match the names of the list on /remotestorage exactly
 9. Run the script
 10. The backed up files should be stored in the script directory like this: scriptdir\YYMMDD\Game_Name\file_name
+
+Note: The "gameWhiteList" parameter is optional, if it's not provided the script will simply backup every available game in the list
