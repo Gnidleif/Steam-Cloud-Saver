@@ -8,7 +8,7 @@ Python 3.10 with the following libraries installed:
 * html.parser
 
 ## How to run
-1. Create a config.json in the script directory
+1. Create a config.json file in the script directory
 2. Open https://store.steampowered.com/account/remotestorage
 3. Open dev tools and head to the networks tab
 4. Refresh the page and open the request going to remotestorage
