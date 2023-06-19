@@ -31,9 +31,11 @@ def main(args: list[str]) -> bool:
         current_dir.mkdir(parents=True, exist_ok=True)
 
     cfg = Config()
-    tbl = fetch_table(cfg, "https://store.steampowered.com/account/remotestorage")
-    tbl = list(filter(lambda x: x[0] in cfg.game_whitelist, tbl)) if len(cfg.game_whitelist) > 0 else tbl
-    for game_row in tbl:
+    remote_table = fetch_table(cfg, "https://store.steampowered.com/account/remotestorage")
+    if len(cfg.game_whitelist) > 0:
+        remote_table = list(filter(lambda x: x[0] in cfg.game_whitelist, remote_table))
+
+    for game_row in remote_table:
         download_tbl = fetch_table(cfg, game_row[3])
         game_dir = current_dir / game_row[0].replace(":", "").replace("!", "").replace("?", "")
         if not os.path.exists(game_dir):
