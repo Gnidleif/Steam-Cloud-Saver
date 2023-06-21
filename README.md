@@ -9,24 +9,23 @@ Python 3.10 with the following libraries installed:
 
 ## How to run
 1. Create a config.json file in the script directory
-2. Open https://store.steampowered.com/account/remotestorage
-3. Open dev tools and head to the networks tab
-4. Refresh the page and open the request going to remotestorage
-5. Grab the "Cookie" value in the request header
-6. Remove everything in the cookie string but the value of "steamLoginSecure"
-7. Add the following contents to your config.json file:
+2. Add the following contents to your config.json file, add your real Steam username and password:
 ```json
 {
-    "steamLoginSecure": "SECURE_COOKIE",
-    "gameWhiteList": [
-      "game1",
-      "game2",
-      "game3"
-    ]
+  "username": "your_username",
+  "password": "your_password",
+  "gameWhiteList": [
+    "game1",
+    "game2",
+    "game3"
+  ]
 }
 ```
-8. Note that the game names have to match the names of the list on /remotestorage exactly
-9. Run the script
-10. The backed up files should be stored in the script directory like this: scriptdir\YYMMDD\Game_Name\file_name
+3. Note that the game names have to match the names of the list on [remote storage](https://store.steampowered.com/account/remotestorage) exactly
+4. Run the script
+5. The backed up files should be stored in the script directory like this: scriptdir\YYMMDD\Game_Name\file_name
 
-Note: The "gameWhiteList" parameter is optional, if it's not provided the script will simply backup every available game in the list
+## Notes
+1. The script only supports two factor authentication as an added security measure
+2. The "game_whitelist" in the config.json file is optional, if it's not provided the script will simply backup every available game in the list
+3. After running once the script will add a "steam_login_secure" parameter which is saved for use by future requests in order to skip logging on every time
