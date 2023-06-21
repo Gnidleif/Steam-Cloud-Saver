@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import pathlib, json, os
+import pathlib, json, os, threading
 from typing_extensions import Self
 from urllib.request import Request, urlopen
 from html_table_parser import HTMLTableParser
@@ -44,7 +44,6 @@ def download_game_row(cfg: Config, game_dir: str, download_row: list[str]) -> No
         w_data.write(data)
 
 def start_downloads(cfg: Config, game_dir: str, game_table: list[str]) -> None:
-    import threading
     threads = []
     for download_row in list(filter(lambda x: len(x[1]) > 0, game_table)):
         threads.append(threading.Thread(target=download_game_row, args=(cfg, game_dir, download_row,)))
