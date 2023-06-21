@@ -11,10 +11,11 @@ class Config:
     def __init__(self: Self, file_name: str = "config"):
         with open(__location__ / f"{file_name}.json", 'r', encoding="utf-8", newline='') as r_json:
             data = json.loads(r_json.read())
-        self.game_whitelist = data["game_whitelist"] if "game_whitelist" in data else []
+
+        self.username = data["username"] if "username" in data else ""
+        self.password = data["password"] if "password" in data else ""
         self.steam_login_secure = data["steam_login_secure"] if "steam_login_secure" in data else ""
-        self.username = data["username"]
-        self.password = data["password"]
+        self.game_whitelist = data["game_whitelist"] if "game_whitelist" in data else []
 
     def update(self: Self, file_name: str = "config") -> None:
         with open(__location__ / f"{file_name}.json", 'w', encoding="utf-8", newline='') as w_json:
@@ -84,13 +85,21 @@ def encrypt_password(password: str, mod: str, exp: str) -> str:
 
 def login_request(cfg: Config) -> None:
     rsa_url = "https://steamcommunity.com/login/getrsakey/"
-    resp = json.loads(http_request(rsa_url, b"username=" + cfg.username.encode("utf-8")))
+    username = cfg.username
+    if username == "":
+        username = input("Enter username: ").strip()
+    
+    password = cfg.password
+    if password == "":
+        password = input("Enter password: ").strip()
+
+    resp = json.loads(http_request(rsa_url, b"username=" + username.encode("utf-8")))
     key_mod = resp["publickey_mod"]
     key_exp = resp["publickey_exp"]
     timestamp = resp["timestamp"]
-    encrypted_password = encrypt_password(cfg.password, key_mod, key_exp)
+    encrypted_password = encrypt_password(password, key_mod, key_exp)
 
-    data = b"username=" + cfg.username.encode("utf-8")
+    data = b"username=" + username.encode("utf-8")
     data += b"&password=" + urllib.parse.quote_plus(encrypted_password).encode("utf-8")
     data += b"&rsatimestamp=" + timestamp.encode("utf-8")
 
