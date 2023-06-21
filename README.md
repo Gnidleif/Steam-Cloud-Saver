@@ -27,6 +27,7 @@ Python 3.10 with the following libraries installed:
 5. The backed up files should be stored in the script directory like this: scriptdir\YYMMDD\Game_Name\file_name
 
 ## Notes
-1. The script only supports two factor authentication as an added security measure
-2. The "game_whitelist" in the config.json file is optional, if it's not provided the script will simply backup every available game in the list
+1. Only supports two factor authentication as an added security measure
+2. "game_whitelist" in the config.json file is optional, if it's not provided the script will simply backup every available game in the list
+3. "username" and "password" in the config.json file are both optional and will have to be provided in the command line when authentication is required if not added to config.json
 3. After running once the script will add a "steam_login_secure" parameter which is saved for use by future requests in order to skip logging on every time
