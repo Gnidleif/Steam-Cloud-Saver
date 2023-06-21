@@ -6,6 +6,7 @@ Python 3.10 with the following libraries installed:
 * typing_extensions
 * urllib.request
 * html.parser
+* pycryptodome
 
 ## How to run
 1. Create a config.json file in the script directory
