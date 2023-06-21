@@ -10,7 +10,7 @@ Python 3.10 with the following libraries installed:
 
 ## How to run
 1. Create a config.json file in the script directory
-2. Add the following contents to your config.json file, add your real Steam username and password:
+2. Add the following contents to your config.json file, all of the listed properties are optional:
 ```json
 {
   "username": "your_username",
