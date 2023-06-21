@@ -85,13 +85,8 @@ def encrypt_password(password: str, mod: str, exp: str) -> str:
 
 def login_request(cfg: Config) -> None:
     rsa_url = "https://steamcommunity.com/login/getrsakey/"
-    username = cfg.username
-    if username == "":
-        username = input("Enter username: ").strip()
-    
-    password = cfg.password
-    if password == "":
-        password = input("Enter password: ").strip()
+    username = cfg.username if cfg.username != "" else input("Enter username: ").strip()
+    password = cfg.password if cfg.password != "" else input("Enter password: ").strip()
 
     resp = json.loads(http_request(rsa_url, b"username=" + username.encode("utf-8")))
     key_mod = resp["publickey_mod"]
